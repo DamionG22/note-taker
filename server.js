@@ -39,6 +39,29 @@ app.post('/api/notes', (req, res) => {
   });
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+  const noteId = parseInt(req.params.id); // Get the note ID from the request parameters
+
+  // Find the index of the note with the matching ID in the notes array
+  const noteIndex = notes.findIndex((note) => note.id === noteId);
+
+  if (noteIndex === -1) {
+    res.status(404).json({ error: 'Note not found' });
+  } else {
+    notes.splice(noteIndex, 1); // Remove the note from the notes array
+
+    // Write the updated notes array to the db.json file
+    fs.writeFile('./db/db.json', JSON.stringify(notes), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to delete note' });
+      } else {
+        res.sendStatus(204); // Respond with a success status code (No Content)
+      }
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });
