@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+// links const notes with db that collects user data
 const notes = require('./db/db.json');
-
+// listening port id
 const PORT = 3001;
 
 const app = express();
@@ -23,12 +24,12 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-  const newNote = req.body; // Get the note from the request body
-  newNote.id = notes.length + 1; // Assign a unique ID to the new note
+  const newNote = req.body; // Gets the note from the request body
+  newNote.id = notes.length + 1; // Assigns an ID to the new note
 
-  notes.push(newNote); // Add the new note to the notes array
+  notes.push(newNote); // Adds the new note to the notes array
 
-  // Write the updated notes array to the db.json file
+  // Writes the updated notes array to the db.json file
   fs.writeFile('./db/db.json', JSON.stringify(notes), (err) => {
     if (err) {
       console.error(err);
