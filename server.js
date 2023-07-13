@@ -4,7 +4,7 @@ const fs = require('fs');
 // links const notes with db that collects user data
 const notes = require('./db/db.json');
 // listening port id
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.post('/api/notes', (req, res) => {
       console.error(err);
       res.status(500).json({ error: 'Failed to save note' });
     } else {
-      res.json(newNote); // Respond with the new note
+      res.json(newNote); // Responds with the new note
     }
   });
 });
